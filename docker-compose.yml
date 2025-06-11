@@ -1,0 +1,6 @@
+services:
+  tg_bot:
+    build: ./tg_bot
+    env_file:
+      - ./tg_bot/.env
+    restart: unless-stopped
