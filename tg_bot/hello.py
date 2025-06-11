@@ -1,4 +1,3 @@
-# tg_bot/hello.py
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 import asyncio
