@@ -27,7 +27,7 @@ For segmentation of the tire ring, we will use open-source labeled dataset and m
 For tire *unwrapping* we will use [OpenCV implementation](https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html#ga49481ab24fdaa0ffa4d3e63d14c0d5e4) of Polar transformation.
 
 ## OCR
-For OCR we will use [Tesseract](https://github.com/tesseract-ocr/tesseract) with [Tesseract.js](https://github.com/naptha/tesseract.js) for the browser.
+For OCR we will use open-source [Tesseract](https://github.com/tesseract-ocr/tesseract) model.
 
 ## Thread segmentator 
 For thread segmentation we will use open-vocabulary segmentation pipeline with Side-Adapter Network proposed by this paper: [ArXiv](https://arxiv.org/pdf/2302.12242)
