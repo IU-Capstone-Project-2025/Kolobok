@@ -13,6 +13,6 @@ The solution is designed for both car owners and retail employees, reducing manu
 * Write @NikitaMensh to get credentials for .env files
 * Run in the root directory:
 ```
-docker compose up --build
+docker-compose up --build
 ```
 * Check here: @kolobok_test10_bot
