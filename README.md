@@ -8,5 +8,11 @@ This project uses machine learning to automate tire valuation. Users send two ph
 
 The solution is designed for both car owners and retail employees, reducing manual workload and enabling remote consultations. Developed in response to a real-world need from a mid-sized car services.
 
-## Testing bot
-@kolobok_test10_bot
+## How to run
+* Download the repo
+* Write @NikitaMensh to get credentials for .env files
+* Run in the root directory:
+```
+docker compose up --build
+```
+* Check here: @kolobok_test10_bot
