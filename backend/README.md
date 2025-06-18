@@ -1,1 +1,1 @@
-Here will be the project's backend
+Basic backend with dummy endpoints
