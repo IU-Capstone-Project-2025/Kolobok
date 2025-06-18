@@ -4,8 +4,10 @@ services:
     env_file:
       - ./tg_bot/.env
     restart: unless-stopped
-  fastapi_app:
-    build: ./fastapi_app
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
     ports:
       - "8000:8000"
     restart: unless-stopped
