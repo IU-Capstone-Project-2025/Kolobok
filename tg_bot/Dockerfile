@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir python-telegram-bot
 
 COPY hello.py .
 
-CMD ["python", "hello.py"]
+CMD ["python", "logic.py"]
