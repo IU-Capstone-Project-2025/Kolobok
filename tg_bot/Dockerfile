@@ -4,6 +4,6 @@ WORKDIR /tg_bot
 
 RUN pip install -r requirements.txt
 
-COPY hello.py .
+COPY logic.py .
 
 CMD ["python", "logic.py"]
