@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #faf8fc;
+    color: #6d41b2;
+}
+header {
+    padding: 32px 0 0 24px;
+}
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #a259e6 0%, #3b2686 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+main {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 80vh;
+    margin-left: 40px;
+}
+.left-block {
+    flex: 0 0 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.blob {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle at 30% 30%, #a259e6 60%, #ff6cab 100%);
+    border-radius: 60% 40% 50% 70%/60% 30% 70% 40%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tire-img {
+    width: 260px;
+    position: absolute;
+    left: 60px;
+    top: 60px;
+}
+.right-block {
+    margin-left: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+h1 {
+    font-size: 72px;
+    font-weight: 400;
+    margin: 0 0 40px 0;
+    background: linear-gradient(90deg, #a259e6 0%, #3b2686 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+.cursor {
+    color: #6d41b2;
+    animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+.buttons {
+    display: flex;
+    gap: 32px;
+}
+button {
+    font-size: 28px;
+    padding: 12px 32px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    background: transparent;
+    color: #2d1b4f;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+    z-index: 1;
+}
+button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(90deg, #a259e6 0%, #3b2686 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+}
+button span, button {
+    background: linear-gradient(90deg, #a259e6 0%, #3b2686 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+button:hover {
+    background: #a259e6;
+    color: #fff;
+    -webkit-text-fill-color: #fff;
+    text-fill-color: #fff;
+}
+.custom-bar {
+    display: inline-block;
+    vertical-align: middle;
+    width: 4px;
+    height: 1.1em;
+    margin-left: 12px;
+    background: #6d41b2;
+    border-radius: 2px;
+    animation: blink 2s steps(1) infinite;
+} 
