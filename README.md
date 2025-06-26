@@ -56,10 +56,13 @@ Both run inside Docker containers orchestrated by **docker-compose**.
 git clone git@github.com:IU-Capstone-Project-2025/Kolobok.git
 cd kolobok
 
-# 2. Create env-file with the required variables (see below)
+# 2. Fetch submodules
+git submodule update --init --recursive
+
+# 3. Create env-file with the required variables (see below)
 cp .env.example .env  # edit values
 
-# 3. Build & start
+# 4. Build & start
 docker-compose up --build
 ```
 The ML API becomes available at `http://localhost:8000`, and the bot starts chatting from the account whose token you supplied.
