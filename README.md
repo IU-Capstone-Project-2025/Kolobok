@@ -72,9 +72,9 @@ Place all variables in `.env` (used by docker-compose):
 | `BOT_TOKEN` | Telegram Bot-Father token |
 | `APP_URL`   | Hostname of the API from inside *bot* container (default `ml:8000`) |
 | `HF_TOKEN`  | 🤗 Hub auth for model downloads |
-| `SPIKE_DETECTOR_CHECKPOINT` | Path / URL to YOLO (or alike) weights |
+| `SPIKE_DETECTOR_CHECKPOINT` | Detector weights |
 | `SPIKE_CLASSIFIER_CHECKPOINT` | Classifier weights |
-| `DEPTH_ESTIMATOR_MODEL_NAME` | Hugging-Face model id |
+| `DEPTH_ESTIMATOR_MODEL_NAME` | Backbone model id for depth estimation |
 | `DEPTH_ESTIMATOR_CHECKPOINT` | Fine-tuned weights |
 | `DEVICE` | `cpu`, `cuda`, `cuda:0`, … |
 
