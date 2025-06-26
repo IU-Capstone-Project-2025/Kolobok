@@ -50,20 +50,6 @@ class DepthEstimatorConfig:
     resize_shape: Tuple[int, int] = (512, 512)
 
 
-OCR_PROMPT = """You are provided with an image of a tire. Your task is to determine the following parameters of the tire:
-1) manufacturer - manufacturer of the tire, if provided, else null
-2) model - model of the tire, string
-3) tire_size_string - this size of the tire as a single string in format "<width, int>/<aspect-ratio, int><construction-type, char>/<diameter, int> <max-weight, int><speed-rating, char>", for example, "205/55R/16 91V". usually, the format is always the same
-
-each field must be either the answer to the question, or null, if you cannot find this information on the image.
-Provide output strictly in json format, without anything else 
-Example:
-{
-    "manufacturer": "...",
-    "model": "...",
-    "tire_size_string": "..."
-}"""
-
 
 @dataclass
 class TireDetectorConfig:
