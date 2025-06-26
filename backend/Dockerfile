@@ -1,8 +1,8 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /backend
 
-RUN pip install --no-cache-dir fastapi uvicorn
+RUN pip install --no-cache-dir fastapi uvicorn Pillow
 
 COPY app.py .
 

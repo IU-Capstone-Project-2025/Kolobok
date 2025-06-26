@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #faf8fc;
+}
+header {
+    padding: 32px 0 0 24px;
+}
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #a259e6 0%, #3b2686 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+}
+.chat-container {
+    width: 900px;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.messages {
+    flex: 1;
+    min-height: 400px;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.message {
+    max-width: 420px;
+    padding: 16px 24px;
+    border-radius: 20px;
+    font-size: 22px;
+    background: #fff;
+    color: #2d1b4f;
+    box-shadow: 0 2px 8px rgba(162,89,230,0.05);
+    border: 2px solid #ece6f6;
+    margin-bottom: 0;
+}
+.message.user {
+    align-self: flex-end;
+    background: #faf8fc;
+    border: 2px solid #a259e6;
+    color: #6d41b2;
+}
+.message.bot {
+    align-self: flex-start;
+    background: #fff;
+    border: 2px solid #ece6f6;
+    color: #2d1b4f;
+}
+.input-area {
+    display: flex;
+    align-items: center;
+    background: #f3f0fa;
+    border-radius: 20px;
+    padding: 8px 16px;
+    box-shadow: 0 2px 8px rgba(162,89,230,0.05);
+    border: 2px solid #ece6f6;
+    gap: 12px;
+}
+.input-area input[type="text"] {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    outline: none;
+    color: #6d41b2;
+    padding: 12px 0;
+}
+.input-area input[type="text"]::placeholder {
+    color: #a59bc6;
+    opacity: 1;
+}
+.attach-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.send-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+}
+.send-btn svg {
+    display: block;
+}
+.message img {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(162,89,230,0.08);
+} 

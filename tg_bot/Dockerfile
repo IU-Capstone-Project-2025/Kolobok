@@ -2,8 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /tg_bot
 
-RUN pip install --no-cache-dir python-telegram-bot
+COPY requirements.txt .
 
-COPY hello.py .
+RUN pip install -r requirements.txt
 
-CMD ["python", "hello.py"]
+COPY logic.py .
+
+CMD ["python", "logic.py"]
