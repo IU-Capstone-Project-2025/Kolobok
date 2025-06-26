@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from PIL import Image, UnidentifiedImageError
 import numpy as np
 
-from utils import get_thread_stats, add_annotations, extract_tire_info
+from utils import get_thread_stats, add_annotations
 
 
 app = FastAPI()
@@ -69,17 +69,6 @@ async def analyze_thread(
 
 
 @app.post("/api/v1/extract_information")
-async def extract_information(
-    req: ImageRequest,
-    token: str = Depends(verify_token),
-):
-    validate_image(req.image)
-    image = np.array(Image.open(io.BytesIO(base64.b64decode(req.image))))
-    result = extract_tire_info(image)
-    return result
-
-
-@app.post("/api/v1/identify_tire")
 async def identify_tire(
     req: ImageRequest,
     token: str = Depends(verify_token),

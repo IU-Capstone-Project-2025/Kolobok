@@ -5,13 +5,11 @@ import cv2
 import torch
 
 from tire_vision.thread.pipeline import TireVisionPipeline
-from tire_vision.text import TireOCR
 from tire_vision.config import TireVisionConfig, CLASS_MAPPING, CLASS_COLORS
 
 
 cfg = TireVisionConfig()
 pipeline = TireVisionPipeline(cfg)
-ocr_pipeline = TireOCR(cfg.ocr)
 
 
 def get_thread_stats(image: np.ndarray) -> dict[str, Any]:
@@ -19,10 +17,6 @@ def get_thread_stats(image: np.ndarray) -> dict[str, Any]:
     result = pipeline(image)
     return result
 
-
-def extract_tire_info(image: np.ndarray) -> dict[str, Any]:
-    """Extract tire information using OCR."""
-    return ocr_pipeline.extract_tire_info(image)
 
 
 def add_annotations(image: np.ndarray, annotations: list[dict[str, Any]]) -> np.ndarray:
