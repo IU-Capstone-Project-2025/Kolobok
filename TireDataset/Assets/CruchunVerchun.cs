@@ -11,6 +11,7 @@ public class CruchunVerchun : MonoBehaviour
     public Material material;
     public float speed = 1;
     public float max_delta_x_angle = 10;
+    public float currentTireThin = 1;
 
     [System.Serializable]
     public class MaterialDeepControl
@@ -92,6 +93,7 @@ public class CruchunVerchun : MonoBehaviour
    {
        originalLocalRotation = transform.localRotation;
    }
+   
     void Update()
    {
        // Calculate the spin (rolling) around rotationForward
