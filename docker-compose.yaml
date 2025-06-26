@@ -1,0 +1,28 @@
+services:
+  ml:
+    build: ./ml
+    container_name: ml
+    environment:
+      - API_TOKEN=${API_TOKEN}
+      - HF_TOKEN=${HF_TOKEN}
+      - SPIKE_DETECTOR_CHECKPOINT=${SPIKE_DETECTOR_CHECKPOINT}
+      - SPIKE_CLASSIFIER_CHECKPOINT=${SPIKE_CLASSIFIER_CHECKPOINT}
+      - DEPTH_ESTIMATOR_MODEL_NAME=${DEPTH_ESTIMATOR_MODEL_NAME}
+      - DEPTH_ESTIMATOR_CHECKPOINT=${DEPTH_ESTIMATOR_CHECKPOINT}
+      - DEVICE=${DEVICE}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+    ports:
+      - "8000:8000"
+
+  tg:
+    build: ./tg
+    container_name: tg
+    depends_on:
+      - ml
+    environment:
+      - API_TOKEN=${API_TOKEN}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - APP_URL=${APP_URL}
+
+volumes:
+  db_data:
