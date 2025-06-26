@@ -116,7 +116,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 TireDataset/Assets/tires/*
-
+TireDataset/Assets/TerrainDemoScene_HDRP/*
+TireDataset/Assets/Dataset/*
+TireDataset/Assets/Dataset.zip
 *.aux
 *.log
 *.out

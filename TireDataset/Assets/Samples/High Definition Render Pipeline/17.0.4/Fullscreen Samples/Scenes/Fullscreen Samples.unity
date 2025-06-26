@@ -150,9 +150,9 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 366232125}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.3
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -183,9 +183,9 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 415040034}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.5
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -341,11 +341,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationForward: {x: 0, y: 0, z: -1}
   rotationLeftRight: {x: 1, y: 0, z: 0}
-  center: {fileID: 1909013840}
+  center: {fileID: 2774220343647419991}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.5
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -389,12 +389,12 @@ MonoBehaviour:
   - {fileID: 415040035}
   - {fileID: 366232126}
   - {fileID: 1677077056}
-  currentTireIndex: 4
+  currentTireIndex: 0
   mainCamera: {fileID: 473340524}
-  framesRate: 5
-  count: 1
-  lighting: 0
-  environment: 0
+  framesRate: 4
+  count: 50
+  lighting: 1
+  environment: 1
   datasetPath: /Users/dmitry057/Projects/Kolobok/TireDataset/Assets/Dataset
 --- !u!4 &568092817
 Transform:
@@ -434,11 +434,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationForward: {x: 0, y: 0, z: -1}
   rotationLeftRight: {x: 1, y: 0, z: 0}
-  center: {fileID: 1843071166}
+  center: {fileID: 2774220343574308284}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.1
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -613,8 +613,8 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 1004603729}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
+  speed: 4
+  max_delta_x_angle: 10
   currentTireThin: 0.8
   deepConfigs:
   - deepness: 1
@@ -891,9 +891,9 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 1325967107}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 0.3
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.7
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -992,7 +992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6689036041284674117, guid: a9130b4ac8c9f48a6b72f1f4296e8dc4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: a9130b4ac8c9f48a6b72f1f4296e8dc4, type: 3}
       propertyPath: m_LocalScale.x
@@ -1172,9 +1172,9 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 1450696305}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.4
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -1205,9 +1205,9 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 1677077055}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
-  currentTireThin: 1
+  speed: 4
+  max_delta_x_angle: 10
+  currentTireThin: 0.2
   deepConfigs:
   - deepness: 1
     useControls: 0
@@ -1237,7 +1237,7 @@ Transform:
   m_GameObject: {fileID: 1843071165}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0, z: 61.4}
+  m_LocalPosition: {x: -0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1301,7 +1301,7 @@ Transform:
   m_GameObject: {fileID: 1909013839}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 65.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1334,8 +1334,8 @@ MonoBehaviour:
   rotationLeftRight: {x: 1, y: 0, z: 0}
   center: {fileID: 1909624308}
   material: {fileID: 2100000, guid: f9041de0afd6c48eaba6bd84bf81d464, type: 2}
-  speed: 7
-  max_delta_x_angle: 20
+  speed: 4
+  max_delta_x_angle: 0.6
   currentTireThin: 1
   deepConfigs:
   - deepness: 1
@@ -1359,7 +1359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6689036041284674117, guid: 569522916bcae4f909c467fa9b60c89e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 569522916bcae4f909c467fa9b60c89e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1675,7 +1675,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2534335996551476252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,7 +1692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &2552326988612081168
 GameObject:
   m_ObjectHideFlags: 0
@@ -1734,7 +1734,7 @@ Transform:
   m_GameObject: {fileID: 2534335996473061367}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.196, z: 0.113}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0.113}
   m_LocalScale: {x: 0.01, y: 0.009999999, z: 0.009999999}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1750,7 +1750,7 @@ Transform:
   m_GameObject: {fileID: 2534335996551476252}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.977, z: 0.555}
+  m_LocalPosition: {x: 0, y: 1.58, z: 0.555}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 1
   m_Children:

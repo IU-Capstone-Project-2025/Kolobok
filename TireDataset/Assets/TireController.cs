@@ -13,6 +13,7 @@ public class TireController : MonoBehaviour
     public int environment = 0;
     public string datasetPath = "Users/dmitry057/Projects/Kolobok/TireDataset/Dataset";
     private WaitForSeconds waitTime;
+    private WaitForSeconds waitTimeBetweenTires = new WaitForSeconds(1f);
     private int currentCount = 0;
     private void Start(){
         waitTime = new WaitForSeconds(1f / framesRate); 
@@ -66,11 +67,25 @@ public class TireController : MonoBehaviour
     }
     public IEnumerator CaptureTireImages()
     {
-        yield return waitTime;
-        while (currentCount < count)
+
+        for (int i = 0; i < tires.Count; i++)
         {
-            CaptureTireImage(count);
-            yield return waitTime;
+            yield return waitTimeBetweenTires;    
+            currentTireIndex = i;
+            tires[i].gameObject.SetActive(true);
+            mainCamera.GetComponent<CameraOrbitalController>().center = tires[currentTireIndex].center;
+    
+            if (i > 0)
+            {
+                tires[i-1].gameObject.SetActive(false);
+            }
+            while (currentCount < count)
+            {
+                CaptureTireImage(count);
+                yield return waitTime;
+            }
+            currentCount = 0;
+            
         }
     }
 
