@@ -1,7 +1,10 @@
-/* Сброс браузерных стилей полностью */
-html, body, #root {
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden;
+*{
+   margin: 0;
+  padding: 0;
 }
 
+.App {
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center;
+}

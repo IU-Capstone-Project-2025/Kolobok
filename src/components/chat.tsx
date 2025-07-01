@@ -2,7 +2,7 @@ import React from "react";
 import "@fontsource/roboto-condensed";
 import "../styles/kolochat.css";
 import Logo from "../static/KOLOBOK.svg";
-import Photo from "../static/tire.png";
+import Photo from "../static/tire.png"
 import { useNavigate } from "react-router-dom";
 
 export default function KolobokChat() {
@@ -29,7 +29,7 @@ export default function KolobokChat() {
         <div className="chat-message user">
           Привет! Мне нужно разметить шину!
           <div className="chat-image">
-            <img src="/tires.png" alt="Загруженное изображение" />
+            <img src={Photo} alt="Загруженное изображение" />
           </div>
         </div>
 
