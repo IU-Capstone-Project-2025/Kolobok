@@ -4,6 +4,6 @@ WORKDIR /app
 
 RUN pip install requests pillow python-telegram-bot
 
-COPY main.py .
+COPY . .
 
 CMD ["python", "main.py"]
