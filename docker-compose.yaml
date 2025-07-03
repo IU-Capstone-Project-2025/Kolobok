@@ -1,6 +1,27 @@
 services:
+  db:
+    build: ./db
+    container_name: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ml:
-    build: ./ml
+    build:
+      context: ./ml
+      secrets:
+        - envfile
     container_name: ml
     environment:
       - API_TOKEN=${API_TOKEN}
@@ -9,7 +30,10 @@ services:
       - SPIKE_CLASSIFIER_CHECKPOINT=${SPIKE_CLASSIFIER_CHECKPOINT}
       - DEPTH_ESTIMATOR_MODEL_NAME=${DEPTH_ESTIMATOR_MODEL_NAME}
       - DEPTH_ESTIMATOR_CHECKPOINT=${DEPTH_ESTIMATOR_CHECKPOINT}
+      - TIRE_DETECTOR_MODEL_ID=${TIRE_DETECTOR_MODEL_ID}
+      - ROBOFLOW_API_KEY=${ROBOFLOW_API_KEY}
       - DEVICE=${DEVICE}
+      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
     ports:
       - "8000:8000"
 
@@ -22,6 +46,11 @@ services:
       - API_TOKEN=${API_TOKEN}
       - BOT_TOKEN=${BOT_TOKEN}
       - APP_URL=${APP_URL}
+      - ALLOWED_USERS=${ALLOWED_USERS}
 
 volumes:
   db_data:
+
+secrets:
+  envfile:
+    file: .env

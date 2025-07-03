@@ -100,7 +100,7 @@ def build_main_menu() -> InlineKeyboardMarkup:
 
 async def send_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Sends the main menu as a new message."""
-    # Acknowledge any callback so the "loading…" spinner goes away
+    # Acknowledge any callback so the “loading…” spinner goes away
     if update.callback_query:
         await update.callback_query.answer()
         chat_id = update.callback_query.message.chat_id
