@@ -1,11 +1,15 @@
+from typing import List, Dict, Any
+import time
+
 import numpy as np
 import cv2
 import torch
 from torch.nn import functional as F
-from typing import List, Dict, Any
 
 from tire_vision.thread.spikes.model import get_spike_detector, get_spike_classifier
 from tire_vision.config import SpikePipelineConfig
+
+import logging
 
 
 class SpikePipeline:
@@ -23,12 +27,22 @@ class SpikePipeline:
 
         self.kernel = np.ones(shape=(3, 3), dtype=np.uint8)
 
+        self.logger = logging.getLogger("spikes")
+
+        self.logger.info("Spike Pipeline module initialized")
+
     @torch.no_grad()
     def detect_spikes(self, image: torch.Tensor) -> List[Dict[str, Any]]:
         *_, h, w = image.shape
+        self.logger.info("Running spike detection")
+        start_time = time.perf_counter()
+
         image_device = image.to(self.config.device)
+
+        self.logger.info("Running spike detection model")
         detection_probs = self.detector(image_device[None])[0, 0]
 
+        self.logger.info("Generating detection mask")
         detection_mask = (
             (detection_probs > self.config.detection_threshold)
             .cpu()
@@ -36,6 +50,7 @@ class SpikePipeline:
             .astype(np.uint8)
         )
 
+        self.logger.info("Applying morphology")
         detection_mask = cv2.erode(
             detection_mask, self.kernel, iterations=self.config.erosion_iterations
         )
@@ -43,6 +58,7 @@ class SpikePipeline:
             detection_mask, self.kernel, iterations=self.config.dilation_iterations
         )
 
+        self.logger.info("Running connected components")
         _, _, _, centroids = cv2.connectedComponentsWithStats(
             detection_mask, connectivity=8, ltype=cv2.CV_32S
         )
@@ -52,6 +68,7 @@ class SpikePipeline:
 
         crop_half = self.config.crop_size // 2
 
+        self.logger.info("Extracting spike crops")
         for c1, c2 in centroids:
             x1 = max(0, c1 - crop_half)
             y1 = max(0, c2 - crop_half)
@@ -84,4 +101,8 @@ class SpikePipeline:
                     "class": spike_class,
                 }
             )
+
+        latency = time.perf_counter() - start_time
+        self.logger.info(f"Spike detection completed in {latency:.4f} seconds")
+
         return spikes
