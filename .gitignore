@@ -125,3 +125,5 @@ TireDataset/Assets/Dataset.zip
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+ml/checkpoints
