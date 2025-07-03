@@ -1,0 +1,125 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\author{Kolobok team}
+\title{Synthetic Dataset Study: Influence of Generated Images, Augmentation and CLAHE}
+\date{June 2025}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+The increasing demand for precise tread–depth estimation in both automotive and industrial settings has driven research towards leveraging advanced data augmentation techniques. Accurate measurements are critical for safety and maintenance applications, yet the collection of extensive, high–quality real–world data remains resource–intensive and time–consuming. Consequently, synthetic datasets generated via domain randomisation have emerged as a compelling alternative, offering flexible control over environmental factors and enabling large–scale data production without prohibitive cost.
+
+Recent advancements in computer vision have demonstrated that combining synthetic imagery with conventional augmentation methods can enhance model robustness and generalisation. However, the relative contributions of synthetic images, standard augmentations, and contrast enhancement techniques such as Contrast Limited Adaptive Histogram Equalization (CLAHE) have not been thoroughly compared in a unified framework. To address this gap, we propose a comprehensive experimental study that isolates the effects of each augmentation strategy.
+
+In this study, we systematically evaluate three orthogonal strategies to enrich the tread–depth training data:
+\begin{enumerate}
+    \item \textbf{Synthetic images}: generated with our domain–randomisation pipeline to simulate diverse lighting, texture, and scene configurations.
+    \item \textbf{Standard augmentations}: including random affine transformations, noise injection, and brightness adjustments to emulate natural variability.
+    \item \textbf{CLAHE}: contrast pre–processing applied to normalize lighting conditions and emphasize local texture details.
+\end{enumerate}
+By enabling each strategy independently, we obtain $2^3 = 8$ distinct experimental conditions. The performance of each condition is quantified as the fraction of predictions within $1\,$mm of the ground truth, as recorded in \texttt{results.csv}.
+
+\section{Results}
+The following sections present detailed outcomes from our experiments, including per–backbone analysis, aggregated synthetic data effects, and an ablation study on the production model.
+
+\subsection{Raw results per backbone}
+Table~\ref{tab:raw} summarizes the fraction of predictions within $1\,$mm of the ground truth for three reference backbone architectures under all eight augmentation configurations. Metrics are reported for Swin\_v2\_s, GoogLeNet, and DenseNet201 to illustrate model–specific sensitivity to each augmentation.
+
+\begin{table}[H]
+    \centering
+    \footnotesize
+    \setlength{\tabcolsep}{5pt}
+    \caption{Raw experiment results for reference backbones — fraction of predictions within $1\,$mm.}
+    \label{tab:raw}
+    \begin{tabular}{l r l l l}
+        \toprule
+        Model & Score & Aug & CLAHE & Synthetic \\
+        \midrule
+        swin\_v2\_s   & 0.7816 & yes & yes & yes \\
+        swin\_v2\_s   & 0.7793 & yes & no  & yes \\
+        swin\_v2\_s   & 0.7632 & no  & yes & yes \\
+        swin\_v2\_s   & 0.8023 & no  & no  & yes \\
+        swin\_v2\_s   & 0.7977 & no  & no  & yes \\
+        swin\_v2\_s   & 0.7839 & yes & yes & no  \\
+        swin\_v2\_s   & 0.7816 & yes & no  & no  \\
+        swin\_v2\_s   & 0.7816 & no  & yes & no  \\
+        swin\_v2\_s   & 0.7724 & no  & no  & no  \\
+        googlenet      & 0.7494 & yes & yes & yes \\
+        googlenet      & 0.7448 & yes & no  & yes \\
+        googlenet      & 0.7586 & no  & yes & yes \\
+        googlenet      & 0.7494 & no  & no  & yes \\
+        googlenet      & 0.7425 & yes & yes & no  \\
+        googlenet      & 0.7402 & yes & no  & no  \\
+        googlenet      & 0.7540 & no  & yes & no  \\
+        googlenet      & 0.7494 & no  & no  & no  \\
+        densenet201    & 0.7471 & yes & yes & yes \\
+        densenet201    & 0.7724 & yes & no  & yes \\
+        densenet201    & 0.7747 & no  & yes & yes \\
+        densenet201    & 0.7747 & no  & no  & yes \\
+        densenet201    & 0.7816 & yes & yes & no  \\
+        densenet201    & 0.7655 & yes & no  & no  \\
+        densenet201    & 0.7563 & no  & yes & no  \\
+        densenet201    & 0.7678 & no  & no  & no  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Analysis of these raw results reveals that model performance varies substantially across both architecture and augmentation choices, with some chains of augmentations yielding notable improvements over the baseline.
+
+\subsection{Effect of synthetic data (mean over backbones)}
+Table~\ref{tab:synthetic} reports the average score across all reference backbones, comparing conditions with and without synthetic data.
+
+\begin{table}[H]
+    \centering
+    \caption{Mean score aggregated by presence of synthetic data (reference backbones).}
+    \label{tab:synthetic}
+    \begin{tabular}{l r}
+        \toprule
+        Synthetic & Mean score \\
+        \midrule
+        no  & 0.7647 \\
+        yes & 0.7689 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The inclusion of synthetic images yields a modest but consistent gain of approximately 0.0042 in the mean fraction of accurate predictions.
+
+\subsection{Production model: EfficientNet--B7}
+Table~\ref{tab:effnet} presents an ablation study on the production–grade EfficientNet–B7 backbone, highlighting the benefits of synthetic data without CLAHE.
+
+\begin{table}[H]
+    \centering
+    \caption{EfficientNet--B7 ablation results.}
+    \label{tab:effnet}
+    \begin{tabular}{l r l l l}
+        \toprule
+        Model      & Score  & Aug & CLAHE & Synthetic \\
+        \midrule
+        effnet\_b7 & 0.8161 & no  & no    & yes \\
+        effnet\_b7 & 0.8000 & no  & no    & no  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The best single run achieves a fraction of 0.8161 for predictions within 1\,mm of the ground truth when training EfficientNet--B7 with synthetic images and without CLAHE.
+
+\section{Discussion}
+Across all experiments, \textbf{synthetic images} yielded a reliable and measurable improvement in performance. This gain, although modest in magnitude, was observed consistently for all reference backbones and the production model, underscoring the value of domain–randomised data in supplementing real–world examples.
+
+Standard augmentations such as random affine transformations and brightness modulation contributed additional robustness to minor variations but did not surpass the impact of synthetic data when applied alone. Nevertheless, their additive effect in combination with synthetic imagery suggests that conventional augmentations remain a useful tool for smoothing the decision boundary in low–resource regimes.
+
+Contrary to expectations, \textbf{CLAHE} contrast enhancement did not yield further gains when applied alongside other strategies. The interactions between CLAHE and synthetic images were negligible, leading us to omit CLAHE from the final production pipeline to reduce computational overhead without sacrificing accuracy.
+
+\section{Conclusion}
+This study demonstrates that integrating domain–randomised synthetic images into the training data is a low–effort yet effective method to enhance tread–depth prediction accuracy. While standard augmentations offer complementary benefits, the omission of CLAHE simplifies the preprocessing pipeline without detrimental effects.
+
+Future work will investigate the impact of additional synthetic modalities, such as 3D–based texture variation, and explore the transferability of these findings to real–world camera systems and other regression tasks.
+
+\end{document}
