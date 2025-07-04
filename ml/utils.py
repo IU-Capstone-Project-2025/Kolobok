@@ -18,7 +18,6 @@ def get_thread_stats(image: np.ndarray) -> dict[str, Any]:
     return result
 
 
-
 def add_annotations(image: np.ndarray, annotations: list[dict[str, Any]]) -> np.ndarray:
     image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     for annotation in annotations:
