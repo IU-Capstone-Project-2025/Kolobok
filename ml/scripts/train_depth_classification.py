@@ -225,10 +225,14 @@ def train_fn(
 def get_model(model_name: str) -> nn.Module:
     if model_name == "swin_v2_s":
         model = swin_v2_s(weights=Swin_V2_S_Weights.IMAGENET1K_V1)
-        model.head = nn.Sequential(nn.Linear(768, 256), nn.ReLU(), nn.Linear(256, NUM_CLASSES))
+        model.head = nn.Sequential(
+            nn.Linear(768, 256), nn.ReLU(), nn.Linear(256, NUM_CLASSES)
+        )
     elif model_name == "swin_s":
         model = swin_s(weights=Swin_S_Weights.IMAGENET1K_V1)
-        model.head = nn.Sequential(nn.Linear(768, 256), nn.ReLU(), nn.Linear(256, NUM_CLASSES))
+        model.head = nn.Sequential(
+            nn.Linear(768, 256), nn.ReLU(), nn.Linear(256, NUM_CLASSES)
+        )
     elif model_name == "effnet_b7":
         model = efficientnet_b7(weights=EfficientNet_B7_Weights.IMAGENET1K_V1)
         model.classifier = nn.Sequential(
@@ -239,7 +243,9 @@ def get_model(model_name: str) -> nn.Module:
         model.features[0][0] = nn.Conv2d(
             in_channels=3, out_channels=96, kernel_size=(5, 5), stride=(2, 2)
         )
-        model.head = nn.Sequential(nn.Linear(768, 512), nn.GELU(), nn.Linear(512, NUM_CLASSES))
+        model.head = nn.Sequential(
+            nn.Linear(768, 512), nn.GELU(), nn.Linear(512, NUM_CLASSES)
+        )
     elif model_name == "densenet201":
         model = densenet201(weights=DenseNet201_Weights.IMAGENET1K_V1)
         model.classifier = nn.Sequential(
@@ -247,7 +253,9 @@ def get_model(model_name: str) -> nn.Module:
         )
     elif model_name == "googlenet":
         model = googlenet(weights=GoogLeNet_Weights.IMAGENET1K_V1)
-        model.fc = nn.Sequential(nn.Linear(1024, 512), nn.ReLU(), nn.Linear(512, NUM_CLASSES))
+        model.fc = nn.Sequential(
+            nn.Linear(1024, 512), nn.ReLU(), nn.Linear(512, NUM_CLASSES)
+        )
     else:
         raise ValueError(f"Model {model_name} not found")
     return model
@@ -324,13 +332,13 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False, num_workers=8)
 
     best_model, score = train_fn(
-        model, 
-        train_loader, 
-        val_loader, 
+        model,
+        train_loader,
+        val_loader,
         config.num_epochs,
         config.start_lr,
         config.use_scheduler,
-        config.gradient_clip
+        config.gradient_clip,
     )
 
     ckpt_name = f"{config.model_name}_{score:.4f}"
