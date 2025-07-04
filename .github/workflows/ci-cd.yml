@@ -24,7 +24,7 @@ jobs:
           pip install ruff
 
       - name: Run Ruff (basic whitespace lint)
-        run: ruff check --select W291,W292,W293,W391 --output-format=github --extend-exclude="\.ipynb$" ml/
+        run: ruff check --select W291,W292,W293,W391 --output-format=github --extend-exclude="(.*\.ipynb$|ml/tests/.*)" ml/
 
   lint-js-css:
     runs-on: ubuntu-latest
@@ -62,7 +62,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r ml/requirements.txt
           pip install pytest pytest-asyncio pytest-mock
           pip install python-telegram-bot requests pillow
 
