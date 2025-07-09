@@ -5,6 +5,12 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  margin-left: 0;
+  padding-left: 0;
+  margin-right: 0;
+  padding-right: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .kolobok-header {
@@ -16,11 +22,13 @@
 
 .kolobok-logo img {
   height: 32px;
+  cursor: pointer;
 }
 
 .kolobok-telegram {
   border: 1px solid #9333ea;
   color: #9333ea;
+  font-size: 1.5rem;
   padding: 0.25rem 1rem;
   border-radius: 9999px;
   background: transparent;
@@ -110,4 +118,96 @@
   font-size: 1.5rem;
   color: #9333ea;
   cursor: pointer;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .kolobok-header {
+    padding: 1rem 1rem;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .kolobok-logo img {
+    height: 28px;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+  }
+
+  .chat-window {
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .chat-message {
+    max-width: 90%;
+    font-size: 0.9rem;
+  }
+
+  .chat-image img {
+    max-width: 150px;
+  }
+
+  .chat-input {
+    padding: 0.5rem;
+  }
+
+  .message-input {
+    font-size: 0.9rem;
+  }
+
+  .send-button {
+    font-size: 1.25rem;
+  }
+
+  .attach-button {
+    font-size: 1.1rem;
+  }
+}
+
+/* Адаптивные стили для маленьких экранов (мобильные телефоны) */
+@media (max-width: 480px) {
+  .kolobok-header {
+    padding: 1rem;
+  }
+
+  .kolobok-logo img {
+    height: 24px;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.1rem;
+  }
+
+  .chat-window {
+    margin: 1rem auto;
+    padding: 0.5rem;
+  }
+
+  .chat-message {
+    max-width: 90%;
+    font-size: 0.85rem;
+  }
+
+  .chat-image img {
+    max-width: 120px;
+  }
+
+  .chat-input {
+    padding: 0.25rem 0.75rem;
+  }
+
+  .message-input {
+    font-size: 0.85rem;
+  }
+
+  .send-button {
+    font-size: 1.25rem;
+  }
+
+  .attach-button {
+    font-size: 1rem;
+  }
 }

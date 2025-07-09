@@ -36,8 +36,7 @@ export default function KolobokHero() {
           </h1>
 
           <div className="kolobok-buttons">
-            <button className="kolobok-btn" onClick={handleGoToChat}>Разметить шину</button>
-            <button className="kolobok-btn" onClick={handleGoToChat}>Выделить количество шипов</button>
+            <button className="kolobok-btn" onClick={handleGoToChat}>Разметить шину ➔</button>
           </div>
         </div>
       </div>

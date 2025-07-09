@@ -38,8 +38,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-    flex-wrap: wrap;
-
+  flex-wrap: wrap;
   justify-content: center;
   gap: 2.5rem;
   padding: 0 1.5rem;
@@ -48,6 +47,7 @@
 
 .kolobok-photo {
   width: 30rem;
+  max-width: 100%;
 }
 
 .kolobok-text {
@@ -95,7 +95,7 @@
   width: 100%;
   overflow-x: hidden;
   min-height: 60vh;
-  gap: 4vh
+  gap: 4vh;
 }
 
 .left-text {
@@ -139,4 +139,118 @@
 
 .animate-blink {
   animation: blink 1s step-start infinite;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .kolobok-header {
+    padding: 4rem 2rem;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+  }
+
+  .kolobok-hero {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-photo {
+    width: 100%;
+    max-width: 25rem;
+  }
+
+  .kolobok-title {
+    font-size: 2.5rem;
+  }
+
+  .kolobok-buttons {
+    justify-content: center;
+  }
+
+  .kolobok-btn {
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .kolobok-info {
+    padding: 3rem 2rem;
+  }
+
+  .kolobok-info-title {
+    font-size: 2.5rem;
+  }
+
+  .kolobok-info-text {
+    font-size: 1.5rem;
+  }
+
+  .kolobok-info-button {
+    font-size: 1rem;
+  }
+}
+
+/* Адаптивные стили для маленьких экранов (мобильные телефоны) */
+@media (max-width: 480px) {
+  .kolobok-header {
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+    padding: 0.2rem 1rem;
+  }
+
+  .kolobok-hero {
+    padding: 1rem;
+  }
+
+  .kolobok-photo {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .kolobok-title {
+    font-size: 2rem;
+  }
+
+  .kolobok-buttons {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .kolobok-btn {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .kolobok-info {
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-info-title {
+    font-size: 2rem;
+  }
+
+  .kolobok-info-text {
+    font-size: 1.4rem;
+  }
+
+  .kolobok-info-button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
 }
