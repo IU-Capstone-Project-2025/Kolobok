@@ -1,5 +1,5 @@
 const API_URL = "http://localhost:8000/api/v1";
-const API_TOKEN = "darriyano"; // должен совпадать с API_TOKEN на бэке
+const API_TOKEN = "kolobok_token"; // должен совпадать с API_TOKEN на бэке
 
 export interface AnalyzeThreadResponse {
   thread_depth: number;

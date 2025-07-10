@@ -38,8 +38,11 @@
         "fullscreen": false,
         "resizable": true,
         "title": "kolobok-desktop",
-        "width": 800,
-        "height": 600
+        "width": 700,
+        "height": 800,
+        "minWidth": 500,
+        "minHeight": 800
+      
       }
     ]
   }
