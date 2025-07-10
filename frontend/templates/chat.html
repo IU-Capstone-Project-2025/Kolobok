@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOLOBOK Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+</head>
+<body>
+    <header>
+        <span class="logo">KOLOBOK</span>
+    </header>
+    <main>
+        <div class="chat-container">
+            <div class="messages" id="messages"></div>
+            <form class="input-area" id="chatForm">
+                <label class="attach-icon">
+                    <input type="file" style="display:none;">
+                    <svg width="24" height="24" fill="none" stroke="#a259e6" stroke-width="2"><path d="M7 17V7a5 5 0 0 1 10 0v10a3 3 0 0 1-6 0V8"/></svg>
+                </label>
+                <input type="text" id="userInput" placeholder="Написать сообщение..." autocomplete="off" />
+                <button type="submit" class="send-btn">
+                    <svg width="36" height="36" fill="none" stroke="#a259e6" stroke-width="2"><path d="M6 30L30 18L6 6V14L20 18L6 22V30Z"/></svg>
+                </button>
+            </form>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html> 
