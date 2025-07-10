@@ -1,121 +1,46 @@
-# Kolobok – Automated Tire Valuation Platform
+# Getting Started with Create React App
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-blue)](#)
-[![Dockerized](https://img.shields.io/badge/Docker-ready-blue)](docker-compose.yaml)
-[![Built with FastAPI](https://img.shields.io/badge/Built%20with-FastAPI-green)](https://fastapi.tiangolo.com/)
-[![Telegram Bot](https://img.shields.io/badge/Telegram-Bot-blue)](#)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Kolobok is an end-to-end system that **estimates tread depth, spike wear and recognises tire make / model** from only two user photos.  A Telegram bot collects the images, a FastAPI service executes the computer-vision pipeline and a lightweight ML bundle runs the models.
+## Available Scripts
 
----
+In the project directory, you can run:
 
-## Table of contents
-1. [Features](#features)
-2. [Architecture](#architecture)
-3. [Quick start](#quick-start)
-4. [Configuration](#configuration)
-5. [Project layout](#project-layout)
-6. [API reference](#api-reference)
-7. [Telegram bot UX](#telegram-bot-ux)
-8. [License](#license)
+### `npm start`
 
----
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Features
-* 📸 **Two-photo workflow** – side wall + tread.
-* ⚙️ **Fully dockerised** – `docker-compose up` spins up everything.
-* 🤖 **Telegram bot** for a friction-less user interface (Russian UI).
-* 🧠 **CV & ML back-end**
-  * Side-wall OCR → brand / model / size extraction
-  * Tread-depth regression
-  * Spike detector & classifier with visual annotations
-* 🔐 **Token-based authentication** between bot and API.
-* 🌩️ Optional GPU support.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-## Architecture
-```mermaid
-flowchart LR
-    User -->|Photos| TGBot
-    TGBot -->|Bearer token + base64 image| API
-    subgraph ml[ML container]
-        API --> CVPipeline
-    end
-    CVPipeline -->|JSON result| TGBot
-    TGBot -->|Chat message| User
-```
-Components:
-* **`tg`** – Telegram bot (python-telegram-bot 20).
-* **`ml`** – FastAPI app exposing the CV pipeline.
+### `npm test`
 
-Both run inside Docker containers orchestrated by **docker-compose**.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-## Quick start
-```bash
-# 1. Clone
-git clone git@github.com:IU-Capstone-Project-2025/Kolobok.git
-cd kolobok
+### `npm run build`
 
-# 2. Fetch submodules
-git submodule update --init --recursive
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-# 3. Create env-file with the required variables (see below)
-cp .env.example .env  # edit values
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-# 4. Build & start
-docker-compose up --build
-```
-The ML API becomes available at `http://localhost:8000`, and the bot starts chatting from the account whose token you supplied.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Configuration
-Place all variables in `.env` (used by docker-compose):
-| Variable | Purpose |
-|----------|---------|
-| `API_TOKEN` | Shared secret between bot and API |
-| `BOT_TOKEN` | Telegram Bot-Father token |
-| `APP_URL`   | Hostname of the API from inside *bot* container (default `ml:8000`) |
-| `HF_TOKEN`  | 🤗 Hub auth for model downloads |
-| `SPIKE_DETECTOR_CHECKPOINT` | Detector weights |
-| `SPIKE_CLASSIFIER_CHECKPOINT` | Classifier weights |
-| `DEPTH_ESTIMATOR_MODEL_NAME` | Backbone model id for depth estimation |
-| `DEPTH_ESTIMATOR_CHECKPOINT` | Fine-tuned weights |
-| `DEVICE` | `cpu`, `cuda`, `cuda:0`, … |
+### `npm run eject`
 
-> ⚠️  Ask `@NikitaMensh` for production values.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-## Project layout
-```text
-ml/           # FastAPI + vision pipeline (Dockerised)
-  ├─ tire_vision/   # Core CV code
-  ├─ external/      # Third-party submodules (SAN etc.)
-  └─ notebooks/     # Exploratory notebooks
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-tg/           # Production Telegram bot (used in docker-compose)
-tg_bot/       # Legacy PoC bot (kept for reference)
-frontend/     # (planned) Web dashboard
-annotations/  # In-house annotation tooling
-TireDataset/  # Raw & processed dataset structure
-Design_Userflow/  # UX diagrams & screenshots
-.vscode/      # Editor settings
-```
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-## API reference
-| Endpoint | Method | Payload | Returns |
-|----------|--------|---------|---------|
-| `/api/v1/analyze_thread` | POST | `{image: <base64>}` | `{thread_depth: float, spikes: [...], image: <base64 annotated PNG>}` |
-| `/api/v1/extract_information` | POST | `{image: <base64>}` | `{tire_mark, tire_manufacturer, tire_diameter}` |
-Authentication: `Authorization: Bearer <API_TOKEN>` header.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-Interactive docs at `http://localhost:8000/docs` (FastAPI swagger).
+## Learn More
 
-## Telegram bot UX
-1. User sends `/start` and enters **password** (`API_TOKEN`).
-2. Chooses:
-   * *Brand & model* – uploads side-view photo.
-   * *Tread depth & spikes* – uploads tread photo.
-3. Bot replies with structured results and offers to correct them.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-Screenshots live in `Design_Userflow/`.
-
-## License
-MIT © Kolobok team
+To learn React, check out the [React documentation](https://reactjs.org/).

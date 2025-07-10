@@ -1,0 +1,256 @@
+.kolobok-container {
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: white;
+  overflow-x: hidden;
+}
+
+.kolobok-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rem 10rem;
+}
+
+.kolobok-logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #7e22ce;
+}
+
+.kolobok-telegram {
+  border: 1px solid #9333ea;
+  background-color: white;
+  color: #9333ea;
+  font-size: 1.5rem;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  transition: 0.2s;
+}
+
+.kolobok-telegram:hover {
+  background-color: #f5f3ff;
+}
+
+.kolobok-hero {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 0 1.5rem;
+  margin-top: 2rem;
+}
+
+.kolobok-photo {
+  width: 30rem;
+  max-width: 100%;
+}
+
+.kolobok-text {
+  align-items: flex-start;
+}
+
+.kolobok-title {
+  font-size: 4rem;
+  font-weight: normal;
+  color: #6b21a8;
+}
+
+.kolobok-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.kolobok-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #7e22ce;
+  background-color: white;
+  color: #7e22ce;
+  font-size: 1.5rem;
+  border-radius: 9999px;
+  transition: 0.2s;
+}
+
+.kolobok-btn:hover {
+  background-color: #f5f3ff;
+}
+
+.kolobok-info {
+  background: linear-gradient(to right, #7e22ce, #db2777);
+  color: white;
+  margin-top: 4rem;
+  margin-left: 0;
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  
+  width: 100%;
+  overflow-x: hidden;
+  min-height: 60vh;
+  gap: 4vh;
+}
+
+.left-text {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.kolobok-info-title {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.kolobok-info-text {
+  max-width: 80rem;
+  margin: 0;
+  font-size: 1.7rem;
+  text-align: justify;
+}
+
+.kolobok-info-button {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  padding: 0.5rem 1.5rem;
+  background-color: white;
+  color: #6b21a8;
+  border-radius: 9999px;
+  transition: 0.2s;
+  border: none;
+}
+
+.kolobok-info-button:hover {
+  background-color: #ede9fe;
+}
+
+/* Мигающий курсор */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-start infinite;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .kolobok-header {
+    padding: 4rem 2rem;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+  }
+
+  .kolobok-hero {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-photo {
+    width: 100%;
+    max-width: 25rem;
+  }
+
+  .kolobok-title {
+    font-size: 2.5rem;
+  }
+
+  .kolobok-buttons {
+    justify-content: center;
+  }
+
+  .kolobok-btn {
+    font-size: 1.25rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .kolobok-info {
+    padding: 3rem 2rem;
+  }
+
+  .kolobok-info-title {
+    font-size: 2.5rem;
+  }
+
+  .kolobok-info-text {
+    font-size: 1.5rem;
+  }
+
+  .kolobok-info-button {
+    font-size: 1rem;
+  }
+}
+
+/* Адаптивные стили для маленьких экранов (мобильные телефоны) */
+@media (max-width: 480px) {
+  .kolobok-header {
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+    padding: 0.2rem 1rem;
+  }
+
+  .kolobok-hero {
+    padding: 1rem;
+  }
+
+  .kolobok-photo {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .kolobok-title {
+    font-size: 2rem;
+  }
+
+  .kolobok-buttons {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .kolobok-btn {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .kolobok-info {
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-info-title {
+    font-size: 2rem;
+  }
+
+  .kolobok-info-text {
+    font-size: 1.4rem;
+  }
+
+  .kolobok-info-button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
