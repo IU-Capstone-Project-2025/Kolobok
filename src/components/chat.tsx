@@ -81,11 +81,17 @@ export default function KolobokChat() {
       if (mode === 'analyze') {
         try {
           const threadRes = await analyzeThread(base64);
-          // Выводим текстовые данные
-          appendMessage({ sender: "bot", text: `Уровень успеха: ${threadRes.success}` });
-          appendMessage({ sender: "bot", text: `Глубина протектора: ${threadRes.thread_depth.toFixed(1)} мм.` });
-          appendMessage({ sender: "bot", text: `Обнаружено ${threadRes.spikes.length} шипов.` });
-          appendMessage({ sender: "bot", text: `Классы шипов: ${threadRes.spikes.map(s => s.class).join(', ')}.` });
+          const depth = threadRes.thread_depth.toFixed(2);
+          const total = threadRes.spikes.length;
+          const bad = threadRes.spikes.filter(s => s.class === 1).length;
+          const good = total - bad;
+          const badPerc = ((bad / total) * 100).toFixed(1);
+          const goodPerc = ((good / total) * 100).toFixed(1);
+
+          // Форматированный вывод
+          appendMessage({ sender: "bot", text: `📊 Результаты анализа протектора:` });
+          appendMessage({ sender: "bot", text: `✅ Глубина протектора: ${depth} мм` });
+          appendMessage({ sender: "bot", text: `✅ Анализ шипов:\nВсего шипов: ${total}\nХорошие: ${good} (${goodPerc}%)\nПоврежденные: ${bad} (${badPerc}%)` });
           // Показываем аннотированное изображение
           appendMessage({ sender: "bot", image: `data:image/png;base64,${threadRes.image}`, text: "Аннотированное изображение:" });
         } catch (err: any) {
@@ -95,18 +101,24 @@ export default function KolobokChat() {
         // mode === 'identify'
         try {
           const infoRes = await extractInformation(base64);
-          if (infoRes.index_results && infoRes.index_results.length > 0) {
-            // Выводим все варианты
+          if (infoRes.index_results?.length) {
             infoRes.index_results
               .sort((a, b) => b.combined_score - a.combined_score)
               .forEach((item, idx) => {
-                appendMessage({
-                  sender: "bot",
-                  text: `Вариант ${idx + 1}: ${item.brand_name} ${item.model_name} (оценка ${item.combined_score.toFixed(2)})`,
-                });
+                const percent = (item.combined_score * 100).toFixed(1);
+                let emoji = '🔴'; let label = 'Низкая';
+                if (item.combined_score >= 0.8) {
+                  emoji = '🟢'; label = 'Высокая';
+                } else if (item.combined_score >= 0.6) {
+                  emoji = '🟡'; label = 'Средняя';
+                }
+                const text = `${emoji} Результат ${idx + 1}:
+Линейка (Бренд): ${item.brand_name}
+Модель: ${item.model_name}
+Размер: ${infoRes.tire_size}
+Точность: ${label} (${percent}%)`;
+                appendMessage({ sender: "bot", text });
               });
-            // И отдельно размер шины
-            appendMessage({ sender: "bot", text: `Размер шины: ${infoRes.tire_size}` });
           } else {
             appendMessage({ sender: "bot", text: "Не удалось определить марку и модель шины." });
           }
