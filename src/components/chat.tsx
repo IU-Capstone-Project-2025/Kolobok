@@ -3,84 +3,97 @@ import "@fontsource/roboto-condensed";
 import "../styles/kolochat.css";
 import Logo from "../static/KOLOBOK.svg";
 import { useNavigate } from "react-router-dom";
+import { analyzeThread, extractInformation } from "../api/api";
 
-// Тип для сообщения, которое может быть либо текстом, либо изображением
 interface Message {
-  text: string; 
-  sender: "user" | "bot"; 
-  image?: string; // Если сообщение содержит изображение, оно будет храниться в этом поле
+  text: string;
+  sender: "user" | "bot";
+  image?: string;
 }
 
 export default function KolobokChat() {
   const [messages, setMessages] = useState<Message[]>([
-    { text: "Привет, чем могу помочь?", sender: "bot" }
+    { text: "Привет, чем могу помочь?", sender: "bot" },
   ]);
-  const [inputValue, setInputValue] = useState(""); // Для хранения значения инпута
-  const [imageFile, setImageFile] = useState<File | null>(null); // Хранение самого файла изображения
+  const [inputValue, setInputValue] = useState("");
   const navigate = useNavigate();
+
+  const appendMessage = (msg: Message) => {
+    setMessages((prev) => [...prev, msg]);
+  };
 
   const handleGoToMain = () => {
     navigate("/");
   };
 
-  const handleSendMessage = () => {
-    if (inputValue.trim() === "") return; // Не отправлять пустое сообщение
-
-    // Добавление нового текстового сообщения в чат
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: inputValue, sender: "user" },
-      { text: "Обрабатываю...", sender: "bot" }, // Для имитации ответа бота
-    ]);
-
-    setInputValue(""); // Очистить инпут после отправки
-  };
-
-  // Обработчик нажатия клавиши
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSendMessage(); // Отправить сообщение по нажатию Enter
-    }
-  };
-
-  // Обработчик для загрузки изображения
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    if (!file) return;
 
-    if (file) {
-      // Проверяем размер файла (ограничение на размер 5 Мб)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Размер изображения слишком большой. Пожалуйста, выберите изображение меньшего размера.");
-        return;
-      }
-
-      // Проверяем расширение файла (jpg, jpeg, png)
-      if (file.type === "image/jpeg" || file.type === "image/png") {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          // Добавляем новое изображение в список сообщений как самостоятельное сообщение
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              text: reader.result as string,
-              sender: "user",
-              image: reader.result as string, // Сохраняем Data URL изображения
-            },
-          ]);
-          setImageFile(file); // Сохраняем сам файл изображения
-        };
-
-        reader.onerror = (error) => {
-          console.error("Ошибка при чтении файла:", error);
-        };
-
-        reader.readAsDataURL(file); // Читаем файл как Data URL
-      } else {
-        alert("Загрузите изображение формата JPG, JPEG или PNG.");
-      }
-    } else {
-      console.log("Файл не выбран.");
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Размер изображения слишком большой. Пожалуйста, ≤5 Мб.");
+      return;
     }
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      alert("Только JPG/PNG, пожалуйста.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const dataUrl = reader.result as string;
+      // Добавляем фото пользователя
+      appendMessage({ text: dataUrl, sender: "user", image: dataUrl });
+
+      const base64 = dataUrl.split(",")[1];
+
+      // Анализ протектора
+      try {
+        const threadRes = await analyzeThread(base64);
+        appendMessage({
+          sender: "bot",
+          text: `Глубина протектора: ${threadRes.thread_depth.toFixed(1)} мм. Спайков: ${threadRes.spikes.length}.`,
+          // <-- вот тут оборачиваем:
+          image: `data:image/png;base64,${threadRes.image}`,
+        });
+      } catch (err: any) {
+        appendMessage({
+          sender: "bot",
+          text: `Ошибка при анализе протектора: ${err.message}`,
+        });
+      }
+
+      // Извлечение информации о шине
+      try {
+        const infoRes = await extractInformation(base64);
+        const best = infoRes.index_results.sort((a, b) => b.combined_score - a.combined_score)[0];
+        appendMessage({
+          sender: "bot",
+          text: `Возможная шина: ${best.brand_name} ${best.model_name} (оценка ${best.combined_score.toFixed(2)}), размер ${infoRes.tire_size}".`,
+        });
+      } catch (err: any) {
+        appendMessage({
+          sender: "bot",
+          text: `Ошибка при извлечении информации: ${err.message}`,
+        });
+      }
+    };
+
+    reader.onerror = () => {
+      alert("Не удалось прочитать файл.");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim()) return;
+    appendMessage({ text: inputValue.trim(), sender: "user" });
+    appendMessage({ text: "Отправь, пожалуйста, фото 😊", sender: "bot" });
+    setInputValue("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleSendMessage();
   };
 
   return (
@@ -95,64 +108,60 @@ export default function KolobokChat() {
 
       {/* Chat Section */}
       <div className="chat-window">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`chat-message ${message.sender}`}
-          >
-            {/* Отображаем текстовое сообщение */}
-            {message.text && !message.image && <p>{message.text}</p>}
-
-            {/* Отображаем изображение как самостоятельное сообщение */}
-            {message.image && (
+        {messages.map((msg, i) => (
+          <div key={i} className={`chat-message ${msg.sender}`}>
+            {!msg.image && <p>{msg.text}</p>}
+            {msg.image && (
               <div className="chat-image">
                 <img
-                  src={message.image}
-                  alt="Загруженное изображение"
+                  src={msg.image}
+                  alt={msg.sender === "user" ? "Ваше фото" : "Ответ бота"}
                   style={{
                     maxWidth: "100%",
-                    maxHeight: "300px", // Ограничиваем размер
-                    objectFit: "contain", // Подгоняем изображение по контейнеру
+                    maxHeight: "300px",
+                    objectFit: "contain",
                     borderRadius: "10px",
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                   }}
                 />
+                {msg.sender === "bot" && (
+                  <p style={{ textAlign: "center" }}>Аннотированное изображение</p>
+                )}
               </div>
             )}
           </div>
         ))}
 
-        <div className="chat-input">
-          {/* Кнопка для загрузки изображения */}
-          <button
-            className="attach-button"
-            onClick={() => document.getElementById("file-input")?.click()}
-          >
-            📎
-          </button>
-
-          {/* Скрытый input для загрузки изображений */}
-          <input
-            type="file"
-            accept="image/jpeg, image/png"
-            style={{ display: "none" }}
-            id="file-input"
-            onChange={handleImageUpload}
-          />
-
-          <input
-            type="text"
-            className="message-input"
-            placeholder="Написать сообщение..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress} // Обработка нажатия клавиши Enter
-          />
-          <button className="send-button" onClick={handleSendMessage}>
-            ➤
-          </button>
-        </div>
+         {/* Input Section */}
+      <div className="chat-input">
+        <button
+          className="attach-button"
+          onClick={() => document.getElementById("file-input")?.click()}
+        >
+          📎
+        </button>
+        <input
+          type="file"
+          accept="image/jpeg, image/png"
+          style={{ display: "none" }}
+          id="file-input"
+          onChange={handleImageUpload}
+        />
+        <input
+          type="text"
+          className="message-input"
+          placeholder="Написать сообщение..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
+        <button className="send-button" onClick={handleSendMessage}>
+          ➤
+        </button>
       </div>
+      </div>
+
+     
     </div>
   );
 }
