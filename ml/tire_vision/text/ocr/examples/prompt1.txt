@@ -1,0 +1,11 @@
+Your task is to extract all visible text from the provided image of a tire.
+Present the extracted text as a JSON object with a single key "strings", which should be a list of all text strings found on the tire.
+Do not include any reasoning or explanations, only the final JSON object.
+
+Example of a valid response:
+{
+    "strings": ["MICHELIN", "Pilot Sport 4 S", "245/35ZR20", "95Y", "Extra Load"]
+}
+
+You will be provided with an original image of a tire and an unwrapped image of the same tire.
+Use two images to increase your accuracy.
