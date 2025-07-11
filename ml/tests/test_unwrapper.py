@@ -19,13 +19,9 @@ def test_tire_unwrapper(tire_unwrapper):
 
     # Create dummy polygons that are somewhat realistic
     # A larger rectangle for the tire
-    tire_polygon = np.array([
-        [10, 10], [630, 10], [630, 470], [10, 470]
-    ])
+    tire_polygon = np.array([[10, 10], [630, 10], [630, 470], [10, 470]])
     # A smaller rectangle for the rim inside the tire
-    rim_polygon = np.array([
-        [100, 100], [540, 100], [540, 380], [100, 380]
-    ])
+    rim_polygon = np.array([[100, 100], [540, 100], [540, 380], [100, 380]])
 
     # Run the unwrapper
     result = tire_unwrapper.get_unwrapped_tire(image, tire_polygon, rim_polygon)
@@ -33,4 +29,4 @@ def test_tire_unwrapper(tire_unwrapper):
     # Check the result
     assert isinstance(result, np.ndarray)
     assert len(result.shape) == 3
-    assert result.shape[2] == 3 # Check for 3 channels (BGR)
+    assert result.shape[2] == 3  # Check for 3 channels (BGR)

@@ -117,7 +117,7 @@ def main():
     gt_paths = Path("/Users/n-zagainov/kolobok/ml/data/annotations_processed")
 
     results = get_cached_results(
-        pkl_path="results.pkl", 
+        pkl_path="results.pkl",
         segmentator=model,
         unwrapper=unwrapper,
         input_dir=input_dir,
@@ -126,11 +126,15 @@ def main():
     for result in results:
         img_path = Path(result["img_path"])
         img_name = img_path.stem
-        Path("/Users/n-zagainov/kolobok/ml/data/annotations_unwrapped").mkdir(parents=True, exist_ok=True)
-        save_path = Path("/Users/n-zagainov/kolobok/ml/data/annotations_unwrapped") / f"{img_name}.png"
+        Path("/Users/n-zagainov/kolobok/ml/data/annotations_unwrapped").mkdir(
+            parents=True, exist_ok=True
+        )
+        save_path = (
+            Path("/Users/n-zagainov/kolobok/ml/data/annotations_unwrapped")
+            / f"{img_name}.png"
+        )
         second_image = result["images"][1]
         cv2.imwrite(str(save_path), second_image)
-
 
     # joined_table = (
     #     db.table.filter(pl.col("parent_id") != 0)

@@ -35,7 +35,7 @@ def main():
         "2 SUV",
         "225/60R17",
         "95H",
-        "225/60R17 95H"
+        "225/60R17 95H",
     ]
 
     result = pipeline.index.get_best_matches(strings)

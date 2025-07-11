@@ -13,7 +13,7 @@ def spike_pipeline_config():
 
 def test_spike_pipeline(spike_pipeline_config):
     """Tests that the spike pipeline runs successfully with real models."""
-    
+
     pipeline = SpikePipeline(config=spike_pipeline_config)
 
     # Create a dummy image
