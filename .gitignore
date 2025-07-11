@@ -25,3 +25,16 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+__pycache__
+
+*.fls
+*.aux
+*.log
+*.fdb_latexmk
+*.synctex.gz
+*.out
+
+ml/checkpoints/
+.vscode/
+
+.envrc
