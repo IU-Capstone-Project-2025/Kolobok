@@ -4,24 +4,51 @@ import "../styles/kolochat.css";
 import { analyzeThread, extractInformation } from "../api/api";
 import {Header} from "../components/header";
 import {Message, TIRE_FACTS, Mode } from "../components/interfaces"
+import { useEffect } from "react";
 
 
 export default function KolobokChat() {
-  const [messages, setMessages] = useState<Message[]>([
-    { text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" },
-  ]);
+  // Загрузка сообщений из localStorage при инициализации
+  // Load messages from localStorage on mount
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem('kolobokMessages');
+      return saved ? JSON.parse(saved) : [{ text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" }];
+    } catch {
+      return [{ text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" }];
+    }
+  });
   const [inputValue, setInputValue] = useState("");
   const [mode, setMode] = useState<Mode>(null);
   const [loading, setLoading] = useState(false);
+
+  // Сохранение сообщений в localStorage при их изменении
+  useEffect(() => {
+    try {
+      localStorage.setItem('kolobokMessages', JSON.stringify(messages));
+    } catch {
+      // Игнорируем ошибки записи
+    }
+  }, [messages]);
 
   const appendMessage = (msg: Message) => {
     setMessages((prev) => [...prev, msg]);
   };
 
-
   const clearLoadingMessage = () => {
     setMessages(prev => prev.filter(m => !m.text.startsWith("Пока идет загрузка...")));
   };
+
+  const clearChat = () => {
+  const welcome: Message = {
+    text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'",
+    sender: "bot",
+  };
+  setMessages([welcome]);
+  localStorage.removeItem("kolobokMessages");
+  setMode(null);
+};
+
 
   const startCommand = (command: Mode) => {
     if (command === 'analyze') {
@@ -38,7 +65,6 @@ export default function KolobokChat() {
   const handleSendMessage = () => {
     const trimmed = inputValue.trim();
     if (!trimmed) return;
-
     appendMessage({ text: trimmed, sender: "user" });
 
     if (trimmed.toLowerCase() === 'анализ шипов') {
@@ -216,6 +242,8 @@ export default function KolobokChat() {
       <div className="command-container">
         <button onClick={()=>startCommand('analyze')} disabled={Boolean(mode)} className="command-button">Анализ шипов</button>
         <button onClick={()=>startCommand('identify')} disabled={Boolean(mode)} className="command-button">Марка и модель</button>
+        <button onClick={clearChat} className="command-button2">🗑️ Очистить чат</button>
+
       </div>
       </div>
 
