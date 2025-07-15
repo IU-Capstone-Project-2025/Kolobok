@@ -29,6 +29,18 @@ export default function KolobokChat() {
     navigate("/");
   };
 
+  const startCommand = (command: Mode) => {
+    if (command === 'analyze') {
+      appendMessage({ text: "Анализ шипов", sender: "user" });
+      setMode('analyze');
+      appendMessage({ text: "📸 Отправь фото для анализа протектора.", sender: "bot" });
+    } else if (command === 'identify') {
+      appendMessage({ text: "Марка и модель", sender: "user" });
+      setMode('identify');
+      appendMessage({ text: "📸 Отправь фото для определения марки и модели.", sender: "bot" });
+    }
+  };
+
   const handleSendMessage = () => {
     const trimmed = inputValue.trim();
     if (!trimmed) return;
@@ -195,6 +207,10 @@ export default function KolobokChat() {
         <button className="send-button" onClick={handleSendMessage}>
           ➤
         </button>
+      </div>
+      <div className="command-container">
+        <button onClick={()=>startCommand('analyze')} disabled={Boolean(mode)} className="command-button">Анализ шипов</button>
+        <button onClick={()=>startCommand('identify')} disabled={Boolean(mode)} className="command-button">Марка и модель</button>
       </div>
       </div>
 
