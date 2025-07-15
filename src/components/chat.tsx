@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "@fontsource/roboto-condensed";
 import "../styles/kolochat.css";
-import Logo from "../static/KOLOBOK.svg";
 import { useNavigate } from "react-router-dom";
 import { analyzeThread, extractInformation } from "../api/api";
+import {Header} from "../components/header";
 
 interface Message {
   text: string;
@@ -156,12 +156,7 @@ export default function KolobokChat() {
 
   return (
     <div className="kolobok-container">
-      <div className="kolobok-header">
-        <div className="kolobok-logo" onClick={handleGoToMain}>
-          <img src={Logo} alt="Kolobok Logo" />
-        </div>
-        <button className="kolobok-telegram">Telegram-bot</button>
-      </div>
+      <Header />
 
       <div className="chat-window">
         {messages.map((msg, i) => (

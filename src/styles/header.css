@@ -1,0 +1,66 @@
+.kolobok-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rem 10rem;
+  text-decoration: none;
+}
+
+.kolobok-logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #7e22ce;
+  text-decoration: none;
+}
+
+.kolobok-telegram {
+  border: 1px solid #9333ea;
+  background-color: white;
+  color: #9333ea;
+  font-size: 1.5rem;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  transition: 0.2s;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: #9333ea;
+
+}
+
+.kolobok-telegram:hover {
+  background-color: #f5f3ff;
+}
+
+@media (max-width: 768px) {
+  .kolobok-header {
+    padding: 4rem 2rem;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .kolobok-header {
+    padding: 2rem 1rem;
+  }
+
+  .kolobok-logo {
+    font-size: 1rem;
+  }
+
+  .kolobok-telegram {
+    font-size: 1.2rem;
+    padding: 0.2rem 1rem;
+  }
+}
