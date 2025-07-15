@@ -1,25 +1,10 @@
 import React, { useState } from "react";
 import "@fontsource/roboto-condensed";
 import "../styles/kolochat.css";
-import { useNavigate } from "react-router-dom";
 import { analyzeThread, extractInformation } from "../api/api";
 import {Header} from "../components/header";
+import {Message, TIRE_FACTS, Mode } from "../components/interfaces"
 
-interface Message {
-  text: string;
-  sender: "user" | "bot";
-  image?: string;
-}
-
-const TIRE_FACTS = [
-  " Шины постоянно теряют давление — до 1 PSI в месяц даже без проколов.",
-  " Вулканизация резины была изобретена Чарльзом Гудиером в 1839 году.",
-  " Средний ресурс легковых шин составляет около 40–60 тысяч километров.",
-  " Шины могут нагреваться до 90°C при длительной езде на высокой скорости.",
-  " Отработанные шины можно переработать и использовать в спортплощадках и покрытиях дорог."
-];
-
-type Mode = 'analyze' | 'identify' | null;
 
 export default function KolobokChat() {
   const [messages, setMessages] = useState<Message[]>([
@@ -28,7 +13,6 @@ export default function KolobokChat() {
   const [inputValue, setInputValue] = useState("");
   const [mode, setMode] = useState<Mode>(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const appendMessage = (msg: Message) => {
     setMessages((prev) => [...prev, msg]);
@@ -110,8 +94,6 @@ export default function KolobokChat() {
           const threadRes = await analyzeThread(base64);
           setLoading(false);
           clearLoadingMessage();
-
-
 
           const depth = threadRes.thread_depth.toFixed(2);
           const total = threadRes.spikes.length;
