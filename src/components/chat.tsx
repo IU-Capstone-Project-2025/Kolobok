@@ -11,6 +11,14 @@ interface Message {
   image?: string;
 }
 
+const TIRE_FACTS = [
+  " Шины постоянно теряют давление — до 1 PSI в месяц даже без проколов.",
+  " Вулканизация резины была изобретена Чарльзом Гудиером в 1839 году.",
+  " Средний ресурс легковых шин составляет около 40–60 тысяч километров.",
+  " Шины могут нагреваться до 90°C при длительной езде на высокой скорости.",
+  " Отработанные шины можно переработать и использовать в спортплощадках и покрытиях дорог."
+];
+
 type Mode = 'analyze' | 'identify' | null;
 
 export default function KolobokChat() {
@@ -19,14 +27,16 @@ export default function KolobokChat() {
   ]);
   const [inputValue, setInputValue] = useState("");
   const [mode, setMode] = useState<Mode>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const appendMessage = (msg: Message) => {
     setMessages((prev) => [...prev, msg]);
   };
 
-  const handleGoToMain = () => {
-    navigate("/");
+
+  const clearLoadingMessage = () => {
+    setMessages(prev => prev.filter(m => !m.text.startsWith("Пока идет загрузка...")));
   };
 
   const startCommand = (command: Mode) => {
@@ -88,11 +98,21 @@ export default function KolobokChat() {
         return;
       }
 
+      setLoading(true);
+      const randomFact = TIRE_FACTS[Math.floor(Math.random() * TIRE_FACTS.length)];
+      let loadingText = "Пока идет загрузка... Ловите интересный факт о шинах: " + randomFact;
+      appendMessage({ text: loadingText, sender: "bot" });
+
       const base64 = dataUrl.split(",")[1];
 
       if (mode === 'analyze') {
         try {
           const threadRes = await analyzeThread(base64);
+          setLoading(false);
+          clearLoadingMessage();
+
+
+
           const depth = threadRes.thread_depth.toFixed(2);
           const total = threadRes.spikes.length;
           const bad = threadRes.spikes.filter(s => s.class === 1).length;
@@ -113,6 +133,10 @@ export default function KolobokChat() {
         // mode === 'identify'
         try {
           const infoRes = await extractInformation(base64);
+          setLoading(false);
+          clearLoadingMessage();
+
+
           if (infoRes.index_results?.length) {
             infoRes.index_results
               .sort((a, b) => b.combined_score - a.combined_score)
@@ -135,6 +159,9 @@ export default function KolobokChat() {
             appendMessage({ sender: "bot", text: "Не удалось определить марку и модель шины." });
           }
         } catch (err: any) {
+          setLoading(false);
+          clearLoadingMessage();
+
           appendMessage({ sender: "bot", text: `Ошибка извлечения информации: ${err.message}` });
         }
       }
@@ -181,7 +208,7 @@ export default function KolobokChat() {
           </div>
         ))}
          <div className="chat-input">
-        <button className="attach-button" onClick={() => document.getElementById("file-input")?.click()}>
+        <button className="attach-button" disabled={loading} onClick={() => document.getElementById("file-input")?.click()}>
           📎
         </button>
         <input
@@ -198,8 +225,9 @@ export default function KolobokChat() {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
+          disabled={loading}
         />
-        <button className="send-button" onClick={handleSendMessage}>
+        <button disabled={loading} className="send-button" onClick={handleSendMessage}>
           ➤
         </button>
       </div>
