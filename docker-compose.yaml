@@ -1,38 +1,69 @@
 services:
+  tor:
+    profiles:
+      - proxy
+    image: dperson/torproxy
+    container_name: tor
+    restart: unless-stopped
+    ports:
+      - "9050:9050"   
+      - "8118:8118"   
+    networks:
+      - proxy
+
+  db:
+    build: ./db
+    image: ghcr.io/v1adych/kolobok:db
+    container_name: db
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ml:
     build:
       context: ./ml
       secrets:
         - envfile
+    image: ghcr.io/v1adych/kolobok:ml
     container_name: ml
-    environment:
-      - API_TOKEN=${API_TOKEN}
-      - HF_TOKEN=${HF_TOKEN}
-      - SPIKE_DETECTOR_CHECKPOINT=${SPIKE_DETECTOR_CHECKPOINT}
-      - SPIKE_CLASSIFIER_CHECKPOINT=${SPIKE_CLASSIFIER_CHECKPOINT}
-      - DEPTH_ESTIMATOR_MODEL_NAME=${DEPTH_ESTIMATOR_MODEL_NAME}
-      - DEPTH_ESTIMATOR_CHECKPOINT=${DEPTH_ESTIMATOR_CHECKPOINT}
-      - TIRE_DETECTOR_MODEL_ID=${TIRE_DETECTOR_MODEL_ID}
-      - ROBOFLOW_API_KEY=${ROBOFLOW_API_KEY}
-      - DEVICE=${DEVICE}
-      - REPLICATE_API_TOKEN=${REPLICATE_API_TOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
+      tor:
+        condition: service_started
+    env_file:
+      - .env
     ports:
       - "8000:8000"
+    networks:
+      - proxy
+      - default
 
   tg:
     build: ./tg
+    image: ghcr.io/v1adych/kolobok:tg
     container_name: tg
     depends_on:
       - ml
-    environment:
-      - API_TOKEN=${API_TOKEN}
-      - BOT_TOKEN=${BOT_TOKEN}
-      - APP_URL=${APP_URL}
-      - ALLOWED_USERS=${ALLOWED_USERS}
+    env_file:
+      - .env
 
 volumes:
   db_data:
 
+
 secrets:
   envfile:
     file: .env
+
+networks:
+  proxy: {}
