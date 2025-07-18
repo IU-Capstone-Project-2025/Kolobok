@@ -1,4 +1,6 @@
-Assets/*
+Assets/Dataset*
+Assets/TerrainDemoScene_HDRP*
+Assets/tires*
 # Unity generated files
 [Ll]ibrary/
 [Tt]emp/
