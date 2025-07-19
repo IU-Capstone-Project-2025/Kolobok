@@ -1,4 +1,4 @@
-const API_URL = "http://158.160.163.245:8000";
+const API_URL = "http://158.160.163.245:8000/api/v1";
 const API_TOKEN = "kolobok_token"; // должен совпадать с API_TOKEN на бэке
 
 export interface AnalyzeThreadResponse {
