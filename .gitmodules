@@ -1,0 +1,3 @@
+[submodule "dataset_utils/label-studio"]
+	path = dataset_utils/label-studio
+	url = git@github.com:HumanSignal/label-studio.git
