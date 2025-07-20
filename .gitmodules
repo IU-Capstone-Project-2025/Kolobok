@@ -1,3 +1,0 @@
-[submodule "ml/external/SAN"]
-	path = ml/external/SAN
-	url = git@github.com:MendelXu/SAN.git

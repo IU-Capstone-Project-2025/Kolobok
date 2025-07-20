@@ -1,7 +1,0 @@
--r external/SAN/requirements.txt
-git+https://github.com/facebookresearch/detectron2.git@v0.6
-transformers
-fastapi
-uvicorn
-replicate
-opencv-python
