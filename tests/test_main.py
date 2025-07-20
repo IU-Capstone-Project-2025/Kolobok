@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import pytest
 import pytest_asyncio
 from unittest.mock import AsyncMock, patch, MagicMock
-import types
 
 import tg.main as bot
 
