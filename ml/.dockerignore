@@ -1,0 +1,6 @@
+data/
+notebooks/
+ocr_quality/
+checkpoints/
+external/
+*.zip

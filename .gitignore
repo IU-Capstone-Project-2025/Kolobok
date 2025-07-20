@@ -33,7 +33,9 @@ __pycache__
 *.fdb_latexmk
 *.synctex.gz
 *.out
+*.csv
 
+ml/onnx/
 ml/checkpoints/
 .vscode/
 

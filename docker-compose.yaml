@@ -1,20 +1,18 @@
 services:
   tor:
-    profiles:
-      - proxy
     image: dperson/torproxy
     container_name: tor
     restart: unless-stopped
-    ports:
-      - "9050:9050"   
-      - "8118:8118"   
     networks:
       - proxy
+    ports:
+      - "9050:9050"
+      - "8118:8118"
 
-  db:
-    build: ./db
-    image: ghcr.io/v1adych/kolobok:db
-    container_name: db
+  mysql_db:
+    build: ./mysql_db
+    image: ghcr.io/v1adych/kolobok:mysql_db
+    container_name: mysql_db
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -36,10 +34,13 @@ services:
     image: ghcr.io/v1adych/kolobok:ml
     container_name: ml
     depends_on:
-      db:
-        condition: service_healthy
       tor:
         condition: service_started
+      mysql_db:
+        condition: service_healthy
+    environment:
+      - HTTP_PROXY=socks5h://tor:9050
+      - HTTPS_PROXY=socks5h://tor:9050
     env_file:
       - .env
     ports:
@@ -57,8 +58,25 @@ services:
     env_file:
       - .env
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    depends_on:
+      - ml
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - proxy
+      - default
+
 volumes:
   db_data:
+  caddy_data:
 
 
 secrets:

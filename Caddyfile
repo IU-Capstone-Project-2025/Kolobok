@@ -1,0 +1,4 @@
+kolobok-ml.duckdns.org {
+    encode gzip zstd
+    reverse_proxy ml:8000
+}
