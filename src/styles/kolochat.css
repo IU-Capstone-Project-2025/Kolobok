@@ -124,6 +124,54 @@
   cursor: pointer;
 }
 
+.command-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.command-button {
+  background-color: #f3f0fa;
+  padding: 12px;
+  border: none;
+  font-size: 1rem;
+  width: 30%;
+  color: #4b4b4b;
+  border-radius: 2rem;
+}
+
+.command-button:hover {
+  cursor: pointer;
+  background-color: #e6dcfd
+}
+
+.command-button:disabled {
+  color: #9c9c9c;
+  cursor: default;
+  background-color: #f3f0fa;
+}
+
+.command-button2 {
+  background-color: #ffd7e4;
+  padding: 12px;
+  border: none;
+  font-size: 1rem;
+  width: 30%;
+  color: #4b4b4b;
+  border-radius: 2rem;
+}
+
+.command-button2:hover {
+  cursor: pointer;
+  background-color: #ea9cb7
+}
+
+.command-button2:disabled {
+  color: #9c9c9c;
+  cursor: default;
+  background-color: #ffd7e4;
+}
+
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 768px) {
   .kolobok-header {
@@ -169,6 +217,11 @@
   .attach-button {
     font-size: 1.1rem;
   }
+
+  .command-button .command-button2 {
+    font-size: 1rem;
+    width: 60%;
+  }
 }
 
 /* Адаптивные стили для маленьких экранов (мобильные телефоны) */
@@ -213,5 +266,10 @@
 
   .attach-button {
     font-size: 1rem;
+  }
+
+  .command-button .command-button2 {
+    font-size: 0.85rem;
+    width: 60%;
   }
 }

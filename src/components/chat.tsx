@@ -1,38 +1,70 @@
 import React, { useState } from "react";
 import "@fontsource/roboto-condensed";
 import "../styles/kolochat.css";
-import Logo from "../static/KOLOBOK.svg";
-import { useNavigate } from "react-router-dom";
 import { analyzeThread, extractInformation } from "../api/api";
+import {Header} from "../components/header";
+import {Message, TIRE_FACTS, Mode } from "../components/interfaces"
+import { useEffect } from "react";
 
-interface Message {
-  text: string;
-  sender: "user" | "bot";
-  image?: string;
-}
-
-type Mode = 'analyze' | 'identify' | null;
 
 export default function KolobokChat() {
-  const [messages, setMessages] = useState<Message[]>([
-    { text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" },
-  ]);
+  // Загрузка сообщений из localStorage при инициализации
+  // Load messages from localStorage on mount
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem('kolobokMessages');
+      return saved ? JSON.parse(saved) : [{ text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" }];
+    } catch {
+      return [{ text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'", sender: "bot" }];
+    }
+  });
   const [inputValue, setInputValue] = useState("");
   const [mode, setMode] = useState<Mode>(null);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  // Сохранение сообщений в localStorage при их изменении
+  useEffect(() => {
+    try {
+      localStorage.setItem('kolobokMessages', JSON.stringify(messages));
+    } catch {
+      // Игнорируем ошибки записи
+    }
+  }, [messages]);
 
   const appendMessage = (msg: Message) => {
     setMessages((prev) => [...prev, msg]);
   };
 
-  const handleGoToMain = () => {
-    navigate("/");
+  const clearLoadingMessage = () => {
+    setMessages(prev => prev.filter(m => !m.text.startsWith("Пока идет загрузка...")));
+  };
+
+  const clearChat = () => {
+  const welcome: Message = {
+    text: "Привет! Напиши 'Анализ шипов' или 'Марка и модель'",
+    sender: "bot",
+  };
+  setMessages([welcome]);
+  localStorage.removeItem("kolobokMessages");
+  setMode(null);
+};
+
+
+  const startCommand = (command: Mode) => {
+    if (command === 'analyze') {
+      appendMessage({ text: "Анализ шипов", sender: "user" });
+      setMode('analyze');
+      appendMessage({ text: "📸 Отправь фото для анализа протектора.", sender: "bot" });
+    } else if (command === 'identify') {
+      appendMessage({ text: "Марка и модель", sender: "user" });
+      setMode('identify');
+      appendMessage({ text: "📸 Отправь фото для определения марки и модели.", sender: "bot" });
+    }
   };
 
   const handleSendMessage = () => {
     const trimmed = inputValue.trim();
     if (!trimmed) return;
-
     appendMessage({ text: trimmed, sender: "user" });
 
     if (trimmed.toLowerCase() === 'анализ шипов') {
@@ -76,16 +108,30 @@ export default function KolobokChat() {
         return;
       }
 
+      setLoading(true);
+      const randomFact = TIRE_FACTS[Math.floor(Math.random() * TIRE_FACTS.length)];
+      let loadingText = "Пока идет загрузка... Ловите интересный факт о шинах: " + randomFact;
+      appendMessage({ text: loadingText, sender: "bot" });
+
       const base64 = dataUrl.split(",")[1];
 
       if (mode === 'analyze') {
         try {
           const threadRes = await analyzeThread(base64);
-          // Выводим текстовые данные
-          appendMessage({ sender: "bot", text: `Уровень успеха: ${threadRes.success}` });
-          appendMessage({ sender: "bot", text: `Глубина протектора: ${threadRes.thread_depth.toFixed(1)} мм.` });
-          appendMessage({ sender: "bot", text: `Обнаружено ${threadRes.spikes.length} шипов.` });
-          appendMessage({ sender: "bot", text: `Классы шипов: ${threadRes.spikes.map(s => s.class).join(', ')}.` });
+          setLoading(false);
+          clearLoadingMessage();
+
+          const depth = threadRes.thread_depth.toFixed(2);
+          const total = threadRes.spikes.length;
+          const bad = threadRes.spikes.filter(s => s.class === 1).length;
+          const good = total - bad;
+          const badPerc = ((bad / total) * 100).toFixed(1);
+          const goodPerc = ((good / total) * 100).toFixed(1);
+
+          // Форматированный вывод
+          appendMessage({ sender: "bot", text: `📊 Результаты анализа протектора:` });
+          appendMessage({ sender: "bot", text: `✅ Глубина протектора: ${depth} мм` });
+          appendMessage({ sender: "bot", text: `✅ Анализ шипов:\nВсего шипов: ${total}\nХорошие: ${good} (${goodPerc}%)\nПоврежденные: ${bad} (${badPerc}%)` });
           // Показываем аннотированное изображение
           appendMessage({ sender: "bot", image: `data:image/png;base64,${threadRes.image}`, text: "Аннотированное изображение:" });
         } catch (err: any) {
@@ -95,22 +141,35 @@ export default function KolobokChat() {
         // mode === 'identify'
         try {
           const infoRes = await extractInformation(base64);
-          if (infoRes.index_results && infoRes.index_results.length > 0) {
-            // Выводим все варианты
+          setLoading(false);
+          clearLoadingMessage();
+
+
+          if (infoRes.index_results?.length) {
             infoRes.index_results
               .sort((a, b) => b.combined_score - a.combined_score)
               .forEach((item, idx) => {
-                appendMessage({
-                  sender: "bot",
-                  text: `Вариант ${idx + 1}: ${item.brand_name} ${item.model_name} (оценка ${item.combined_score.toFixed(2)})`,
-                });
+                const percent = (item.combined_score * 100).toFixed(1);
+                let emoji = '🔴'; let label = 'Низкая';
+                if (item.combined_score >= 0.8) {
+                  emoji = '🟢'; label = 'Высокая';
+                } else if (item.combined_score >= 0.6) {
+                  emoji = '🟡'; label = 'Средняя';
+                }
+                const text = `${emoji} Результат ${idx + 1}:
+Линейка (Бренд): ${item.brand_name}
+Модель: ${item.model_name}
+Размер: ${infoRes.tire_size}
+Точность: ${label} (${percent}%)`;
+                appendMessage({ sender: "bot", text });
               });
-            // И отдельно размер шины
-            appendMessage({ sender: "bot", text: `Размер шины: ${infoRes.tire_size}` });
           } else {
             appendMessage({ sender: "bot", text: "Не удалось определить марку и модель шины." });
           }
         } catch (err: any) {
+          setLoading(false);
+          clearLoadingMessage();
+
           appendMessage({ sender: "bot", text: `Ошибка извлечения информации: ${err.message}` });
         }
       }
@@ -132,12 +191,7 @@ export default function KolobokChat() {
 
   return (
     <div className="kolobok-container">
-      <div className="kolobok-header">
-        <div className="kolobok-logo" onClick={handleGoToMain}>
-          <img src={Logo} alt="Kolobok Logo" />
-        </div>
-        <button className="kolobok-telegram">Telegram-bot</button>
-      </div>
+      <Header />
 
       <div className="chat-window">
         {messages.map((msg, i) => (
@@ -162,7 +216,7 @@ export default function KolobokChat() {
           </div>
         ))}
          <div className="chat-input">
-        <button className="attach-button" onClick={() => document.getElementById("file-input")?.click()}>
+        <button className="attach-button" disabled={loading} onClick={() => document.getElementById("file-input")?.click()}>
           📎
         </button>
         <input
@@ -179,10 +233,17 @@ export default function KolobokChat() {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
+          disabled={loading}
         />
-        <button className="send-button" onClick={handleSendMessage}>
+        <button disabled={loading} className="send-button" onClick={handleSendMessage}>
           ➤
         </button>
+      </div>
+      <div className="command-container">
+        <button onClick={()=>startCommand('analyze')} disabled={Boolean(mode)} className="command-button">Анализ шипов</button>
+        <button onClick={()=>startCommand('identify')} disabled={Boolean(mode)} className="command-button">Марка и модель</button>
+        <button onClick={clearChat} className="command-button2">🗑️ Очистить чат</button>
+
       </div>
       </div>
 
