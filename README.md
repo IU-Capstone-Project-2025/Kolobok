@@ -219,7 +219,8 @@ Classification evaluation is conducted on a set of 1441 spike crops (from segmen
 ## Deployment
 * Running React application: [link](https://kolobok-meme.vercel.app)
 * Backend Swagger documentation: [link](https://kolobok-ml.duckdns.org/docs)
-* Tauri desktop application builds: *Coming soon*
+* Tauri desktop application builds: [Download for macOS (Apple Silicon, .dmg)](https://www.dropbox.com/scl/fi/6hp4r845xfi8d8t3aom0h/kolobok-desktop_0.1.0_aarch64.dmg?rlkey=0xkaw1wcq5tl6l8hevgpqo2il&st=pigqgc41&dl=0)
+* Android application build: [Download APK](https://www.dropbox.com/scl/fi/yrkeblali84lnn55famk8/app-universal-release-unsigned.apk?rlkey=cugicjoe20i2f7uv8cp5le13q&st=v8bgpf7a&dl=0)
 * Telegram bot: *Coming soon*
 
 ## Reproducibility
